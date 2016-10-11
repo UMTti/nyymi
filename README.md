@@ -1,96 +1,43 @@
 # nyymi
 
-Nyymi on rekrytointipalvelu, joka piilottaa kaikki hakijoiden iän, sukupuolen ja etnisen taustan kertovat tiedot.
+[![Coverage Status](https://coveralls.io/repos/github/nyymiapp/nyymi/badge.svg?branch=master)](https://coveralls.io/github/nyymiapp/nyymi?branch=master)
 
-##Tekninen toteutus ja CI
+[![Build Status](https://travis-ci.org/nyymiapp/nyymi.svg?branch=master)](https://travis-ci.org/nyymiapp/nyymi)
 
-Sovelluksessa on sekä one-to-many että many-to-many-yhteyksiä. CI-systeeminä on [shippable](https://app.shippable.com/). 
+[Aikakirjanpito](https://docs.google.com/spreadsheets/d/1HR3h8OUmtGv9Rlxunj25JdfaotxLDICiaqsESHZKF8A/edit?usp=sharing) [Heroku](https://nyymi.herokuapp.com/)
 
-##Ulkoasu
+## Käyttö
+Tätä sovellusta käytetään anonyymiin työnhakuun. Se piilottaa hakijasta nimen sekä muut yhteystiedot ja opiskelupaikoista koulun nimen. Työnantaja luo yrityksen ja asettaa sille avoimia työpaikkoja, joita muut käyttäjät voivat hakea. 
 
-http://www.free-css.com/free-css-templates/page193/spot sekä Angular ja Bootstrap. 
+Sovellus toimii itse omana käyttöohjeenaan, sillä eri tilanteissa käyttäjälle näytetään notifikaatioina käyttöohjeita ja suositellaan toimintatapoja sovelluksessa. Alkuun pääsee rekisteröitymällä. 
 
-## Yksityisyydenhallinta
+## Ulkoiset gemit
 
-Yksityisenhallinnassa käytetään deklaratiivisen autentikoinnin gemiä CanCania (https://github.com/ryanb/cancan ).
+[Sendgrid](http://sendgrid.com/) hoitaa sähköpostien lähetyksen.
 
-##Kielilokalisointi
+[CanCan](https://github.com/ryanb/cancan) huolehtii sivujen authorisoinnista ja näin on mahdollista yhdestä CanCanin määrittelytiedostosta nähdä millaiset käyttäjät pääsevät katsomaan mitäkin sivua.
 
-ei vielä tehty
+[Pusher](https://pusher.com/) huolehtii chatin viestien lähetyksen websocketeilla. 
 
-## Muut ulkoiset gemit tai palvelut
-* JSONin generoinnin ehdollisuuteen käytetään [JBuilderia](https://github.com/rails/jbuilder). 
-* Kun yritys saa uuden hakemuksen, siitä lähetetään sähköposti ylläpitäjille [Sendgridillä](https://sendgrid.com/).
+[Database Cleaneria](https://github.com/DatabaseCleaner/database_cleaner) käytetään testeissä tietokannan tyhjennykseen.
 
-##Testausuunnitelma 
+[Bootstrap](http://getbootstrap.com/components/) tyyleihin.
 
-###Yksikkötestaus
+[CSS-teema](http://www.free-css.com/free-css-templates/page193/spot) jota on käytetty 
 
-Yksikkötestejä on User, Company ja OpenJob -olioiden validointiin sekä open_jobs.json -vastauksesta varmistamiseen, ettei vanhentuneita avoimia työpaikkoja ole mukana listauksessa. (HUOM tee tämä) 
+[JBuilder](https://github.com/rails/jbuilder) json.builder-tiedostojen ohjelmointiin
 
-###Capybara -testaus
+[json](https://rubygems.org/gems/json/versions/1.8.3) jsonin parsimiseen
 
-Kaikkien luokkien kaikki sivut testataan erityisesti yksityisyyden takaamiseksi. 
+Google maps karttoihin
 
-###Company
+## Testausperiaate
 
-<b>New-sivu</b>
-* Jos käyttäjä ei ole kirjautunut, cancan estää pääsemästä new -sivulle t
+RSpec-testeillä testataan ainoastaan olioiden validointia. 
+Aluksi testausperiaatteena oli kirjoittaa selaintestit [CanCan-sääntöjen](https://github.com/nyymiapp/nyymi/blob/master/app/models/ability.rb) pohjalta. Tämä periaate onkin nähtävissä joissain selaintesteissä kuten [companies_page_specissä](https://github.com/nyymiapp/nyymi/blob/master/spec/features/companies_page_spec.rb). Testien kirjoituksen aikana huomattiin että tämä lähestymistapa on hyvin työläs ja siirryttiin coverage-driven-testaukseen. Testauksen ulkopuolelle on jätetty kaikki osat joiden testaaminen katsottiin liian vaikeaksi. 
 
-<b>Index-sivu</b>
-* Jos käyttäjä ei ole kirjautunut, Luo uusi yritys -nappia ei ole t
-* Kun käyttäjä luo yrityksen kirjautuneena, hänestä tulee ylläpitäjä. t
+##Kaavio
 
-<b>Edit-sivu: </b>
-* Käyttäjä ei pääse edit-sivulle, jos hän ei ole ylläpitäjä mutta on kirjautunut t
-* Käyttäjä ei pääse edit-sivulle, jos hän ei ole kirjautunut lainkaan t
-* Käyttäjä pääsee edit -sivulle ja muokatut tiedot tulevat näkyviin yrityksen sivulla muokkauksen jälkeen jos ylläpitäjä t
+[Rails-erdillä](https://github.com/voormedia/rails-erd) piirretty [kaavio](https://github.com/nyymiapp/nyymi/blob/master/erd.pdf). Siitä näkyy että Companyn ja Userin välillä on many-to-many- yhteys. 
 
-<b>Administration -sivu</b>
-* Käyttäjä ei pääse administration-sivulle, jos hän ei ole ylläpitäjä mutta on kirjautunut t
-* Käyttäjä ei pääse administration-sivulle, jos hän ei ole kirjautunut lainkaan t
-* Käyttäjä pääsee administration -sivulle, jos hän on ylläpitäjä t
-
-<b>Yrityksen poistaminen</b>
-* Käyttäjä voi poistaa yrityksen kirjautuneena ylläpitäjänä
-
-<b>Administration -sivulle vievä nappi</b>
-* Yrityksen sivulla ei näy administration -nappia (vie kyseiselle sivulle), jos käyttäjä on kirjautunut mutta ei ole ylläpitäjä t
-* Yrityksen sivulla näkyy administration -nappi jos käyttäjä on ylläpitäjä t
-
-<b>About -sivu</b>
-* Käyttäjä pääsee about-sivulle (Tietoa yritykselle) kirjautuneena t
-* Käyttäjä pääsee about-sivulle (Tietoa yritykselle) kirjautumattomana  t
-
-###User
-
-<b>Rekisteröityminen:</b>
-* Kun käyttäjä ei ole kirjautunut sisään, navigaatiopalkissa näkyy Rekisteröidy -ja Kirjaudu sisään -napit t
-* Käyttäjä kirjautuu automaattisesti sisään rekisteröityessä t
-* Kun käyttäjä on kirjautunut sisään, navigaatiopalkissa näkyy Kirjaudu ulos -nappi t
-
-<b>Show-sivu</b>
-* Käyttäjä ei pääse muiden käyttäjien sivulle kirjautuneena
-* Käyttäjä ei pääse muiden käyttäjien sivulle kirjautumattomana 
-
-
-<b>Edit -sivu</b>
-* Käyttäjä ei voi muokata muiden käyttäjien tietoja kirjautumattomana
-* Käyttäjä ei voi muokata muiden käyttäjien tietoja kirjautuneena
-* Käyttäjä voi muokata omia tietojaan 
-
-###Open job
-
-* Yrityksen ylläpitäjä voi luoda uuden avoimen työpaikan administration -sivulta 
-
-###Application
-
-
-
-#TODO: 
-
-2. haastattelukutsu jollakin message gemillä https://github.com/mailboxer/mailboxer 
-3. react näkymiä 
-4. kielilokalisointi
-5. https://github.com/plataformatec/devise autentikointi 
 

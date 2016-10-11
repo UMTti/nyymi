@@ -1,9 +1,56 @@
 <p id="notice"></p>
 
+<script>
+
+$( document ).ready(function() {
+  $( "#send_message_button" ).click(function() {
+    $( "#send_message_form" ).slideToggle( "slow", function() {
+    // Animation complete.
+    });
+  });
+});
+
+  var appi = angular.module('send_message_app', []);
+
+appi.controller('MainCtrl', [
+'$scope',
+function($scope){
+
+  $scope.message = {};
+  $scope.message.content = " ";
+
+  $scope.sendMessage = function(){
+
+    $scope.company_id=(/companies\/(\d+)/.exec(window.location.href)[1]);
+
+    $( "#send_message_form" ).slideToggle( "slow", function() {
+        // Animation complete.
+    });
+
+    var param_message = {
+      content: $scope.message.content,
+      company_id: $scope.company_id, 
+    }
+
+    console.log(param_message.content + " param_message");
+
+    $.post('/send_message_for_company', { message: param_message })
+    .success(function(data, status) {
+        $scope.message.content = " ";
+        $( "#notice" ).append("<div class='alert alert-success'> <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>Viesti lähetetty!</div>");
+    }).error(function(data, status) {
+        alert("error");
+    });
+
+  };
+
+}]);
+
+</script>
 
 <h1><%= @company.name %></h1>
 
-<%= link_to("Website", "http://#{@company.website}") %>
+<%= link_to("Website", "http://#{@company.website}") %> 
 
 <h3>
   <%= @company.description %>
@@ -11,19 +58,52 @@
 
 <% if current_user and current_user.companies.include? @company %>
 	
-	<%= link_to "Admin page", administration_company_path(@company), class:"btn btn-primary", style:"color:white;" %>
+	<%= link_to "Ylläpito", administration_company_path(@company), class:"btn btn-primary", style:"color:white;", id:"company_administration" %>
 
 <% end %>
 
-<h3> Our open jobs </h3>
+<h3> Avoimet työpaikat </h3>
+<table class="table">
+<tbody>
 <% @company.open_jobs.each do |o| %>
-	<%= link_to o.name, o %>
+	<tr>
+	<td><%= link_to o.name, o %></td>
+	</tr>
 </br>
 <% end %>
+</tbody>
+</table>
+
 <% if @company.open_jobs.length == 0 %>
 	Ei avoimia työpaikkoja tällä hetkellä.
 	</br>
 <% end %>
 
 </br>
+
+<% if current_user != nil and not @company.users.include? current_user %>
+<div class="btn btn-primary" id="send_message_button">Lähetä viesti</div></br>
+
+<div ng-app="send_message_app" ng-controller="MainCtrl">
+
+  <div id="send_message_form" style="display:none;"></br>
+    Lähetä viesti </br>
+    <textarea type='text' ng-model="message.content" name='message[content]' rows="5" cols="80"> </textarea> </br></br>
+    <button ng-click='sendMessage()'>Lähetä</button>
+  </div>
+  </br>
+</div>
+
+<% end %>
+
+<h3> Paikka </h3>
+
+<iframe
+  width="300"
+  height="225"
+  frameborder="0" style="border:0"
+  src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDHa4KyabobnijWEJ_29JzrrXUae13jJ-4&q=<%=@company.location%>" allowfullscreen>
+</iframe>
+
+</br></br>
 <%= link_to 'Back', companies_path, 'data-no-turbolink' => true, style:"btn"  %>

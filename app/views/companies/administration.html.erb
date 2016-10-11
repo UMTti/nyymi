@@ -1,13 +1,84 @@
+<p id="notice"></p>
+
 <% if current_user && @company.users.includes(current_user) %>
   <h1> <%= @company.name %> ylläpito</h1>
 
        <%= link_to 'Poista yritys', @company , method: :delete, data: { confirm: 'Oletko varma? Kaikki yrityksen avoimet työpaikat poistuvat myös.' }, class:"btn btn-danger", style:"color:white;"%> 
-        <%= link_to 'Muokkaa perustietoja', edit_company_path(@company), 'data-no-turbolink' => true, class:"btn btn-primary", style:"color:white;"  %> 
+        <%= link_to 'Muokkaa perustietoja', edit_company_path(@company), 'data-no-turbolink' => true, class:"btn cool_button", style:"color:white;"  %> 
 	<h3> Ylläpitäjät </h3>
 	<% @company.users.each do |a| %>
 		<%= a.username %> </br>
-	<% end %>
+	<% end %></br>
 
+<script>
+
+$( document ).ready(function() {
+  $( "#add_admin_button" ).click(function() {
+    $( "#add_admin_form" ).slideToggle( "slow", function() {
+    });
+  });
+
+   $( "#create_open_job_button" ).click(function() {
+    $( "#create_open_job_form" ).slideToggle( "slow", function() {
+    });
+  });
+
+  var notice = localStorage.getItem("notification");
+    localStorage.setItem("notification", "");
+    if(notice == "Käyttäjää ei löydy tai hän on jo ylläpitäjä." || notice == "Ylläpitäjä lisätty."){
+      $("#notice").html("<div class='alert alert-success'>" + notice + " <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button></div>");
+    }
+});
+
+var appi = angular.module('admin_app', []);
+
+appi.controller('MainCtrl', [
+'$scope',
+function($scope){
+
+  $scope.admin = {};
+  $scope.admin.username = " ";
+
+  $scope.addAdmin = function(){
+
+    $scope.company_id=(/companies\/(\d+)\/administration/.exec(window.location.href)[1]);
+
+    var admin = {
+      username: $scope.admin.username,
+      company_id: $scope.company_id, 
+    }
+
+    $.post('/companies/'+ $scope.company_id + '/add_admin', admin)
+    .success(function(data, status) {
+        localStorage.setItem("notification", "Ylläpitäjä lisätty.");
+        location.reload();
+    }).error(function(data, status) {
+        localStorage.setItem("notification", "Käyttäjää ei löydy tai hän on jo ylläpitäjä.");
+        location.reload();
+    });
+
+  };
+
+}]);
+
+</script>
+
+<div class="btn btn-default" id="add_admin_button">Lisää uusi ylläpitäjä</div></br>
+
+<div ng-app="admin_app" ng-controller="MainCtrl">
+
+  {{adminnotice}}
+
+  <div id="add_admin_form" style="display:none;"></br>
+    Lisää uusi ylläpitäjä käyttäjänimellä:</br>
+    <input type='text' ng-model='admin.username' name='admin[username]'> </br></br>
+    <button ng-click='addAdmin()'>Lisää</button>
+  </div>
+  </br>
+</div>
+
+<div class="btn btn-default" id="create_open_job_button">Luo uusi avoin työpaikka</div>
+<div style="display:none;" id="create_open_job_form"> 
 	<h3> Luo uusi avoin työpaikka </h3>
 
 	<%= form_for(@open_job) do |f| %>
@@ -26,17 +97,18 @@
     		<%= f.date_field :expires %>
 		</div>
     <%= f.submit %>
+</div>
 
-    <h3> Avoimien työpaikkojen ylläpito </h3>
+ <h3> Avoimien työpaikkojen ylläpito </h3>
     <% @company.open_jobs.each do |o| %>
-    	<%= link_to o.name, administration_open_job_path(o) %> </br>
+      <%= link_to o.name, administration_open_job_path(o) %> </br>
     <% end %>
     <% if @company.open_jobs.length == 0 %>
       Ei vielä työpaikkoja!
     <% end %>
   <% end %>
 
-
 <% else %>
   Et ole ylläpitäjä.
 <% end %>
+

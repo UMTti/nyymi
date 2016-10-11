@@ -1,14 +1,112 @@
-<% if current_user && @open_job.company.users.includes(current_user) %>
-  <h1> <%= @open_job.name %> ylläpito</h1>
+<p id="notice"> </p>
 
-       <%= link_to 'Poista avoin työpaikka', @open_job , method: :delete, data: { confirm: 'Are you sure?' }, class:"btn btn-danger", style:"color:white;"%>
-       <% if can? :edit, @open_job %>
-         <%= link_to 'Edit', edit_open_job_path(@open_job), 'data-no-turbolink' => true  %> 
+<script>
+
+var appi = angular.module('send_message_for_hakija_app', []);
+
+appi.controller('OpenJobAdminCtrl', [
+'$scope','$parse',
+function($scope, $parse){
+
+  $scope.message = {};
+  $scope.message.content = " ";
+
+  $scope.sendMessage = function(param_receiver_id, param_company_id, param_application_id){
+
+    var the_string = 'message.content' + param_application_id;
+    var getter = $parse(the_string);
+
+    var contentt = getter($scope);
+
+    getter.assign($scope, "");
+
+    var param_message = {
+      content: contentt,
+      receiver_id: param_receiver_id, 
+      company_id: param_company_id,
+      invitationsended: "true",
+      application_id: param_application_id
+    }
+
+    $.post('/send_interview_invitation', { message: param_message, application_id: param_application_id })
+    .success(function(data, status) {
+             $("#notice").html("<div class='alert alert-success'> Haastattelukutsu lähetetty! Hakijan vastaus tulee Viestit -osioon. <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button></div>");
+    }).error(function(data, status) {
+        alert("error");
+    });
+
+  };
+
+}]);
+
+$( document ).ready(function() {
+
+$( ".hidden_partial_button" ).click(function() {
+  id = this.id
+  $( "#" + id + "divi" ).slideToggle( "slow", function() {
+    // Animation complete.
+  });
+});
+
+});
+
+</script>
+
+<% if current_user && @open_job.company.users.includes(current_user) %>
+  <h1> <%= @open_job.name %> ylläpito
+
+       <span><%= link_to 'Poista avoin työpaikka', @open_job , method: :delete, class:"btn btn-danger", style:"color:white;"%></span>
+
+<% if can? :edit, @open_job %>
+        <span> <%= link_to 'Muokkaa', edit_open_job_path(@open_job), 'data-no-turbolink' => true, class:"btn btn-default"  %> </span>
        <% end %>
-	<h3> Hakemukset </h3>
-	<% @open_job.applications.each do |a| %>
-		<%= link_to a.id, a %> </br>
+  </h1>
+
+Vanhentuu hakijoille: <%= @open_job.expires %></br></br>
+<i><%= @open_job.description %></i>
+
+</br></br>
+	<h2> Hakemukset 
+
+
+     <% if session[:show_abandoned] == "true" %>
+        <span> <%= link_to "Älä näytä hylättyjä hakemuksia", toggle_showing_abandoned_path, method: :post, class: "btn cool_button", style:"color:white;" %></span>
+        <% else %>
+        <span><%= link_to "Näytä myös hylätyt hakemukset", toggle_showing_abandoned_path, method: :post, class: "btn cool_button", style:"color:white;" %></span>
+        <% end %>
+
+  </h2>
+
+<div ng-app="send_message_for_hakija_app" ng-controller="OpenJobAdminCtrl">
+
+  <table class="table">
+
+     <thead>
+      <tr>
+        <th>Käyttäjänimi</th>
+      </tr>
+    </thead>
+
+  <tbody>
+	<% @applications.each do |a| %>
+    <tr>
+    <% div_id = "hidden-partial-#{a.id}" -%>
+		<td><div id="<%= div_id -%>" class="hidden_partial_button btn btn-default" style="margin-bottom:10px;"> <%=a.user.username %>
+        <% if a.abandoned  %>
+       <span class="label label-primary">hylätty</span>
+       <% end %>
+      <% if a.invitationsended == "true"  %>
+         <span class="label label-primary">haastattelukutsu lähetetty</span>
+       <% end %>
+       </div>
+      <div style="display:none;border: 1px solid #EEA236; padding:10px;" id="<%= div_id -%>divi" class="hidden_partial">
+        <%= render 'applications/showpartial', a: a %>
+      </div>
+    </td>
+    </tr>
 	<% end %>
+  </tbody>
+</div>
 
 <% else %>
  Et ole ylläpitäjä.

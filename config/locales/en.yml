@@ -21,3 +21,17 @@
 
 en:
   hello: "Hello world"
+  choose_skill: "Choose skill, not prejudices!"
+  introduction_text: "Recruitment application of the new era. With Nyymi you can both apply for a job and hire so that all information regarding to name, gender, age and ethnical background are hided. Say goodbye to hiding information manually!"
+  immigrants: "IMMIGRANTS"
+  women: "WOMEN"
+  all: "ALL"
+  signup: "SIGN UP"
+
+fi: 
+  choose_skill: "Valitse taito, älä ennakkoluuloja"
+  introduction_text: "Uuden ajan rekrytointisovellus, jonka avulla voit hakea töitä sekä rekrytoida niin, että kaikki hakijoiden sukupuolen, iän ja etnisen alkuperän kertovat tiedot on piilotettu työhaastatteluun asti. Ei enää hakemusten sensurointia käsin!"
+  immigrants: "MAAHANMUUTTAJAT"
+  women: "NAISET"
+  all: "KAIKKI"
+  signup: "REKISTERÖIDY"

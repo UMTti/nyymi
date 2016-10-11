@@ -36,26 +36,11 @@ RSpec.describe ExperiencesController, type: :controller do
   # ExperiencesController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  describe "GET #index" do
-    it "assigns all experiences as @experiences" do
-      experience = Experience.create! valid_attributes
-      get :index, {}, valid_session
-      expect(assigns(:experiences)).to eq([experience])
-    end
-  end
-
   describe "GET #show" do
     it "assigns the requested experience as @experience" do
       experience = Experience.create! valid_attributes
       get :show, {:id => experience.to_param}, valid_session
       expect(assigns(:experience)).to eq(experience)
-    end
-  end
-
-  describe "GET #new" do
-    it "assigns a new experience as @experience" do
-      get :new, {}, valid_session
-      expect(assigns(:experience)).to be_a_new(Experience)
     end
   end
 

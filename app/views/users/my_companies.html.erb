@@ -1,39 +1,19 @@
-<h3> Yritysten ylläpitosivut </h3>
+<h2> Yritysten ylläpitosivut </h2>
 <table class="table table-hover">
 		<% @user.companies.each do |c| %>
-			<tr><%= link_to c.name, administration_company_path(c) %> </tr>
-			</br>
+      <tr>
+			<td><%= link_to c.name, administration_company_path(c), 'data-no-turbolink' => true %> </td>
+			</tr>
 		<% end %>
 </table>
 
-<h3> Työpaikat </h3>
-
-
-<div ng-app="myApp" ng-controller="OpenJobsAdministrationController">
-
-  <input ng-model="searchText">
-
-  <table class="table table-hover">
-    <thead>
-    <th> <a ng-click="sort_by('name')">name</a> </th>
-    <th> <a ng-click="sort_by('company.name')">company</a> </th>
-    <th> <a ng-click="sort_by('company.location')">location</a> </th>
-    </thead>
-    <tr ng-repeat="open_job in open_jobs| orderBy:order | filter:searchText">
-      <td><%= link_to '{{open_job.name}}', 'open_jobs/{{open_job.id}}' %></td>
-      <td><%= link_to '{{open_job.company.name}}', 'companies/{{open_job.company.id}}' %></td>
-      <td>{{open_job.company.location}}</td>
-    </tr>
-  </table>
-
-</div>
-
 <script>
+
 
   var myApp = angular.module('myApp', []);
 
-  myApp.controller("OpenJobsAdministrationController", function ($scope, $http) {
-    $http.get('open_jobs.json').success( function(data, status, headers, config) {
+  myApp.controller("OpenJobsController", function ($scope, $http) {
+    $http.get('/current_user_open_jobs.json').success( function(data, status, headers, config) {
       $scope.open_jobs = data;
     });
 
@@ -46,5 +26,23 @@
 
     $scope.searchText = '';
   });
-
 </script>
+
+<h2>Avoimien työpaikkojen ylläpitosivut</h2>
+
+<div ng-app="myApp" ng-controller="OpenJobsController">
+
+  <input ng-model="searchText">
+
+  <table class="table table-hover">
+    <thead>
+    <th> <a ng-click="sort_by('name')">name</a> </th>
+    <th> <a ng-click="sort_by('company.name')">company</a> </th>
+    </thead>
+    <tr ng-repeat="open_job in open_jobs| orderBy:order | filter:searchText">
+      <td><%= link_to '{{open_job.name}}', '/open_jobs/{{open_job.id}}/administration' , 'data-no-turbolink' => true%></td>
+      <td><%= link_to '{{open_job.companyname}}', '/companies/{{open_job.company_id}}/administration', 'data-no-turbolink' => true %></td>
+    </tr>
+  </table>
+
+</div>

@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+
+  get '' => "open_jobs#welcome"
+  get '/:locale' => "open_jobs#welcome"
+
+  scope "/:locale" do
+    resources :conversations
   resources :experiences
   resources :applications
   resources :open_jobs
@@ -10,6 +16,12 @@ Rails.application.routes.draw do
  get 'signout', to: 'sessions#destroy'
   get 'about', to: 'companies#about'
   get 'welcome', to: 'open_jobs#welcome'
+  post 'messages', to: 'messages#create'
+  post 'send_message_for_company', to: 'messages#send_message_for_company'
+  post 'send_interview_invitation', to: 'messages#send_interview_invitation'
+  post 'set_read', to: 'conversations#set_read'
+
+  get 'current_user_open_jobs', to: 'open_jobs#current_user_open_jobs'
 
   root :to => "open_jobs#welcome"
 
@@ -31,8 +43,24 @@ Rails.application.routes.draw do
   resources :users do
        member do
          get 'my_companies'
+         get 'messages'
        end
   end
+
+
+  resources :applications do
+    post 'toggle_abandoned', on: :member
+  end
+
+  resources :companies do
+    post 'add_admin', on: :member
+  end
+
+
+  post 'toggle_showing_abandoned',  to: 'open_jobs#toggle_showing_abandoned' 
+  end
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

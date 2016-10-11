@@ -11,14 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160223121948) do
+ActiveRecord::Schema.define(version: 20160418132217) do
 
   create_table "applications", force: :cascade do |t|
     t.integer  "open_job_id"
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.text     "freetext"
+    t.boolean  "abandoned"
+    t.string   "invitationsended"
   end
 
   create_table "companies", force: :cascade do |t|
@@ -35,6 +37,23 @@ ActiveRecord::Schema.define(version: 20160223121948) do
     t.integer "user_id",    null: false
   end
 
+  create_table "conversation_channels", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "conversation_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "channel"
+  end
+
+  create_table "conversations", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "company_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "channel"
+    t.string   "userchannel"
+  end
+
   create_table "experiences", force: :cascade do |t|
     t.integer  "application_id"
     t.string   "place"
@@ -43,6 +62,20 @@ ActiveRecord::Schema.define(version: 20160223121948) do
     t.date     "end"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.string   "strictplace"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.text     "content"
+    t.integer  "user_id"
+    t.integer  "company_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.integer  "conversation_id"
+    t.integer  "sender_id"
+    t.integer  "receiver_id"
+    t.string   "sendername"
+    t.boolean  "seen"
   end
 
   create_table "open_jobs", force: :cascade do |t|
@@ -52,6 +85,7 @@ ActiveRecord::Schema.define(version: 20160223121948) do
     t.date     "expires"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.string   "companyname"
   end
 
   create_table "users", force: :cascade do |t|
@@ -62,6 +96,8 @@ ActiveRecord::Schema.define(version: 20160223121948) do
     t.string   "email"
     t.string   "phonenumber"
     t.string   "realname"
+    t.string   "channel"
+    t.string   "sendername"
   end
 
 end

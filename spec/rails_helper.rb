@@ -40,7 +40,12 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  config.use_transactional_fixtures = true
+
+  # POISTETTUUUUUUUU config.use_transactional_fixtures = true
+
+  config.use_transactional_fixtures = false
+
+  DatabaseCleaner.strategy = :truncation
 
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
@@ -67,5 +72,13 @@ RSpec.configure do |config|
     fill_in('username', with:credentials[:username])
     fill_in('password', with:credentials[:password])
     click_button('Kirjaudu sisään')
+  end
+
+  def create_users_and_company
+    @user = User.create username:"Pekka", password:"Foobar1", password_confirmation:"Foobar1", channel:"abc123", id:1
+    @company = Company.create name:"UMT Software", id:1
+    @user2 = User.create username:"Pekka2", password:"Foobar1", password_confirmation:"Foobar1", channel:"def456"
+    @company.users << @user2
+    @company.save
   end
 end

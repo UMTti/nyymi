@@ -18,6 +18,7 @@ class CompaniesController < ApplicationController
   end
 
   def about
+    
   end
 
   # GET /companies/new
@@ -37,6 +38,22 @@ class CompaniesController < ApplicationController
     @open_job.expires = DateTime.now + 2.months
   end
 
+  def add_admin
+    @company = Company.find(params[:company_id])
+    @user = User.find_by username: params[:username]
+
+    respond_to do |format|
+      if @user != nil and !@company.users.include? @user
+        @company.users << @user
+        @company.save!
+        format.json { render :show, status: :ok, location: @company }
+      else 
+        format.json { render json: @company.errors, status: :unprocessable_entity }
+      end
+    end
+
+  end
+
   # POST /companies
   # POST /companies.json
   def create
@@ -45,14 +62,14 @@ class CompaniesController < ApplicationController
       current_user.companies << @company
     end
     @company.save
-    flash[:safe] = %Q[Company created! Now #{view_context.link_to("create new open jobs", administration_company_path(@company))}]
+    flash[:safe] = %Q[Yritys luotu! #{view_context.link_to("Tee uusia avoimia työpaikkoja", administration_company_path(@company))}.]
     respond_to do |format|
       if @company.save
         format.html { redirect_to @company }
         format.json { render :show, status: :created, location: @company }
       else
         format.html { render :new }
-        format.json { render json: @company.errors, status: :unprocessable_entity }
+        format.json { render json: @company.errors, status: :internal_server_error }
       end
     end
   end
@@ -62,7 +79,7 @@ class CompaniesController < ApplicationController
   def update
     respond_to do |format|
       if @company.update(company_params)
-        format.html { redirect_to @company, notice: 'Company was successfully updated.' }
+        format.html { redirect_to @company, notice: 'Päivitetty' }
         format.json { render :show, status: :ok, location: @company }
       else
         format.html { render :edit }
@@ -76,7 +93,7 @@ class CompaniesController < ApplicationController
   def destroy
     @company.destroy
     respond_to do |format|
-      format.html { redirect_to companies_url, notice: 'Company was successfully destroyed.' }
+      format.html { redirect_to companies_url, notice: 'Yritys tuhottu.' }
       format.json { head :no_content }
     end
   end

@@ -15,6 +15,13 @@ gem 'coffee-rails', '~> 4.1.0'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+
+gem 'pusher'
+
+gem 'json'
+
+gem 'coveralls', require: false
+
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -30,14 +37,19 @@ gem 'jquery-turbolinks'
 
 gem "cancan"
 
+gem 'selenium-webdriver'
+
 gem 'jbuilder', '~> 2.0'
 
 gem 'poltergeist'
+
+#gem "capybara-webkit"
 
 gem 'simplecov', :require => false, :group => :test
 
 group :development do
   gem 'rails_layout'
+  gem "rails-erd"
 end
 
 group :development, :test do
@@ -53,6 +65,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'capybara'
   gem 'launchy'
+  gem 'database_cleaner'
 end
 
 group :development, :test do

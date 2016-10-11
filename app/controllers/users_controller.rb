@@ -1,3 +1,5 @@
+require 'digest/bubblebabble'
+
 class UsersController < ApplicationController
   load_and_authorize_resource :except => :update
 
@@ -5,7 +7,7 @@ class UsersController < ApplicationController
     params[:user] &&= user_params
   end
 
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :messages]
 
 # poistettu coveragen lisäämiseks
   # GET /users
@@ -28,10 +30,16 @@ class UsersController < ApplicationController
   def edit
   end
 
+  def messages
+
+  end
+
   # POST /users
   # POST /users.json
   def create
     @user = User.new(user_params)
+
+    @user.channel = Digest::SHA256.bubblebabble (@user.username + @user.password_digest)
 
     @user.save
     @user.authenticate(params[:password])
@@ -39,7 +47,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        notic = %Q[Welcome! Now you can #{view_context.link_to("search open jobs", open_jobs_path)} or #{view_context.link_to("create a company and new open jobs", new_company_path)}.]
+        notic = %Q[Tervetuloa! Nyt #{view_context.link_to("selaa työpaikkoja", open_jobs_path)} tai #{view_context.link_to("luo yritys ja sille avoimia työpaikkoja", new_company_path)}.]
         flash[:safe] = notic
         format.html { redirect_to @user }
         format.json { render :show, status: :created, location: @user }
@@ -59,22 +67,12 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.html { redirect_to @user, notice: 'Päivitetty' }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  # DELETE /users/1
-  # DELETE /users/1.json
-  def destroy
-    @user.destroy
-    respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
-      format.json { head :no_content }
     end
   end
 
