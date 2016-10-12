@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  filter :locale
+  #filter :locale
 
   scope "(:locale)", locale: /en|fi/ do
     resources :conversations

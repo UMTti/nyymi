@@ -93,7 +93,7 @@ class CompaniesController < ApplicationController
   def destroy
     @company.destroy
     respond_to do |format|
-      format.html { redirect_to companies_url, notice: 'Yritys tuhottu.' }
+      format.html { redirect_to companies_url, notice: t("company_destroyed") }
       format.json { head :no_content }
     end
   end

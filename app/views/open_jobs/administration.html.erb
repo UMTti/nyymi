@@ -53,26 +53,26 @@ $( ".hidden_partial_button" ).click(function() {
 </script>
 
 <% if current_user && @open_job.company.users.includes(current_user) %>
-  <h1> <%= @open_job.name %> ylläpito
+  <h1> <%= @open_job.name %> <%=t :administration %>
 
-       <span><%= link_to 'Poista avoin työpaikka', @open_job , method: :delete, class:"btn btn-danger", style:"color:white;"%></span>
+       <span><%= link_to t("delete_open_job"), @open_job , method: :delete, class:"btn btn-danger", style:"color:white;"%></span>
 
 <% if can? :edit, @open_job %>
-        <span> <%= link_to 'Muokkaa', edit_open_job_path(@open_job), 'data-no-turbolink' => true, class:"btn btn-default"  %> </span>
+        <span> <%= link_to t("edit"), edit_open_job_path(@open_job), 'data-no-turbolink' => true, class:"btn btn-default"  %> </span>
        <% end %>
   </h1>
 
-Vanhentuu hakijoille: <%= @open_job.expires %></br></br>
+<%=t :expires_for_applicants %> <%= @open_job.expires %></br></br>
 <i><%= @open_job.description %></i>
 
 </br></br>
-	<h2> Hakemukset 
+	<h2> <%=t :applications %>
 
 
      <% if session[:show_abandoned] == "true" %>
-        <span> <%= link_to "Älä näytä hylättyjä hakemuksia", toggle_showing_abandoned_path, method: :post, class: "btn cool_button", style:"color:white;" %></span>
+        <span> <%= link_to t("dont_show_abandoned"), toggle_showing_abandoned_path, method: :post, class: "btn cool_button", style:"color:white;" %></span>
         <% else %>
-        <span><%= link_to "Näytä myös hylätyt hakemukset", toggle_showing_abandoned_path, method: :post, class: "btn cool_button", style:"color:white;" %></span>
+        <span><%= link_to t("show_abandoned"), toggle_showing_abandoned_path, method: :post, class: "btn cool_button", style:"color:white;" %></span>
         <% end %>
 
   </h2>
