@@ -47,7 +47,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        notic = %Q[Tervetuloa! Nyt #{view_context.link_to("selaa työpaikkoja", open_jobs_path)} tai #{view_context.link_to("luo yritys ja sille avoimia työpaikkoja", new_company_path)}.]
+        notic = %Q[#{t("welcome_now")} #{view_context.link_to(t("browse_open_jobs"), open_jobs_path)} #{t("or")} #{view_context.link_to(t("create_company_and_open_jobs_for_it"), new_company_path)}.]
         flash[:safe] = notic
         format.html { redirect_to @user }
         format.json { render :show, status: :created, location: @user }
@@ -67,7 +67,7 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'Päivitetty' }
+        format.html { redirect_to @user, notice: t("updated")  }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }

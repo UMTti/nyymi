@@ -58,11 +58,11 @@ function($scope){
 
 <% if current_user and current_user.companies.include? @company %>
 	
-	<%= link_to "Ylläpito", administration_company_path(@company), class:"btn btn-primary", style:"color:white;", id:"company_administration" %>
+	<%= link_to t("administration_upcase"), administration_company_path(@company), class:"btn btn-primary", style:"color:white;", id:"company_administration" %>
 
 <% end %>
 
-<h3> Avoimet työpaikat </h3>
+<h3> <%=t :open_jobs %></h3>
 <table class="table">
 <tbody>
 <% @company.open_jobs.each do |o| %>
@@ -75,7 +75,7 @@ function($scope){
 </table>
 
 <% if @company.open_jobs.length == 0 %>
-	Ei avoimia työpaikkoja tällä hetkellä.
+	<%=t :no_open_jobs_currently %>
 	</br>
 <% end %>
 
@@ -96,7 +96,7 @@ function($scope){
 
 <% end %>
 
-<h3> Paikka </h3>
+<h3> <%=t :location %></h3>
 
 <iframe
   width="300"

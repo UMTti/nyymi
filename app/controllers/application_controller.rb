@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
 
   before_action :set_locale
+  before_filter :set_locale
 
   def set_locale
     if params[:locale] == "en" or params[:locale] == "fi"

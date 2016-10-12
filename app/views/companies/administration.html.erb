@@ -25,7 +25,7 @@ $( document ).ready(function() {
 
   var notice = localStorage.getItem("notification");
     localStorage.setItem("notification", "");
-    if(notice == "Käyttäjää ei löydy tai hän on jo ylläpitäjä." || notice == "Ylläpitäjä lisätty."){
+    if(notice == I18n.t("admin_adding_failed") || notice == I18n.t("admin_added")){
       $("#notice").html("<div class='alert alert-success'>" + notice + " <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button></div>");
     }
 });
@@ -48,15 +48,12 @@ function($scope){
       company_id: $scope.company_id, 
     }
 
-    console.log(I18n.t("admin_adding_failed") + " käännös");
-    console.log("asd");
-
     $.post('/companies/'+ $scope.company_id + '/add_admin', admin)
     .success(function(data, status) {
-        localStorage.setItem("notification", "Ylläpitäjä lisätty.");
+        localStorage.setItem("notification", I18n.t("admin_added"));
         location.reload();
     }).error(function(data, status) {
-        localStorage.setItem("notification", "asd");
+        localStorage.setItem("notification", I18n.t("admin_adding_failed"));
         location.reload();
     });
 

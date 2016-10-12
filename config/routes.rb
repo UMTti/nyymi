@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
-
-  get '' => "open_jobs#welcome"
-  get '/:locale' => "open_jobs#welcome"
+  filter :locale
 
   scope "(:locale)", locale: /en|fi/ do
     resources :conversations

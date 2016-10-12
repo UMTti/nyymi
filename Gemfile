@@ -43,6 +43,8 @@ gem 'jbuilder', '~> 2.0'
 
 gem 'poltergeist'
 
+gem 'routing-filter'
+
 #gem "capybara-webkit"
 
 gem 'simplecov', :require => false, :group => :test

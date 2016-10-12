@@ -6,7 +6,7 @@
 <h4><%= @open_job.description %></h4>
 
 <p>
-  <strong>Viimeinen hakupäivä</strong>
+  <strong><%=t :last_application_date %></strong>
   <%= @open_job.expires %>
 </p>
 
@@ -54,7 +54,7 @@ function($scope){
       strictplace: $scope.experience.strictplace
     }
   console.log(experience);
-  $( "#experiences" ).append("kokemus " + $scope.experience.place + " tallennettu </br>");
+  $( "#experiences" ).append(I18n.t("experience") + " " + $scope.experience.place + " " + I18n.t("saved") + "</br>");
    $scope.experiences.push(experience);
    $scope.experience.place = "";
    $scope.experience.des = "";
@@ -78,7 +78,7 @@ function($scope){
     }
      $.post('/applications', application).success(function(data, status) {
        
-       localStorage.setItem("notification", "Hakemus luotu!");
+       localStorage.setItem("notification", I18n.t("application_created"));
         window.location = "/open_jobs";
      });
   };
@@ -100,53 +100,53 @@ function($scope){
     <% if not @open_job.company.users.include? current_user %>
 
     <div id="create_application_button" class="btn btn-primary">
-      Tee hakemus!
+      <%=t :create_application %>
     </div>
 
 
     <div id="send_application_form" style="display:none;border: 1px solid #EEA236; padding:10px; border-radius:1px;" ></br>
-      Vapaa kenttä </br></br>
+      <%=t :free_field %></br></br>
     <textarea type='text' ng-model='application.freetext' name='application[freetext]' rows="5" cols="80"></textarea> </br></br>
 
 
     <div id="experiences"> </div></br></br>
 
-    <div id="create_experience_button" class="btn btn-primary">Lisää kokemus</div></br></br>
+    <div id="create_experience_button" class="btn btn-primary"><%=t :add_experience %></div></br></br>
 
     <div style="display:none;border: 1px solid #EEA236; padding:10px; border-radius:1px;" id="create_experience_form">
 
-      <h4>Uusi kokemus </h4>
-       Valitse tyyppi: <select name="experience[place]" ng-model="experience.place" id="experience_place">
-            <option value="yliopisto">Yliopisto</option> <!-- interpolation -->
-          <option value="ammattikorkeakoulu">Ammattikorkeakoulu</option>
-          <option value="työ">Työ</option>
-          <option value="lukio">Lukio</option>
-          <option value="ammattikoulu">Ammattikoulu</option>
-          <option value="luottamustoimi">Luottamustoimi</option>
-          <option value="muu koulutus">Muu koulutus</option>
-          <option value="vapaaehtoistyö">Vapaaehtoistyö</option>
-          <option value="muu kokemus">Muu kokemus</option>
+      <h4><%=t :new_experience %> </h4>
+       <%=t :choose_type %> <select name="experience[place]" ng-model="experience.place" id="experience_place">
+            <option value="yliopisto"><%=t :university %></option> <!-- interpolation -->
+          <option value="ammattikorkeakoulu"><%=t :university_of_applied_sciences %></option>
+          <option value="työ"><%=t :job %></option>
+          <option value="lukio"><%=t :highschool %></option>
+          <option value="ammattikoulu"><%=t :vocational_school %></option>
+          <option value="luottamustoimi"><%=t :position_of_responsibility %></option>
+          <option value="muu koulutus"><%=t :other_education %></option>
+          <option value="vapaaehtoistyö"><%=t :voluntary %></option>
+          <option value="muu kokemus"><%=t :other_experience %></option>
         </select> </br> </br>
         <div id="experience_strictplace" style="display:none;"> 
-        Paikan nimi </br><input type='text' ng-model='experience.strictplace' name='experience[strictplace]'> </br></br>
+        <%=t :place_name %> </br><input type='text' ng-model='experience.strictplace' name='experience[strictplace]'> </br></br>
       </div>
-      Kuvaus tekemisestä </br><textarea type='text' ng-model='experience.des' name='experience[des]' rows="5" cols="50"></textarea> </br></br>
-      Alku <input type="date" name="experience[starting]" ng-model="experience.starting"
+      <%=t :description_of_experience %></br><textarea type='text' ng-model='experience.des' name='experience[des]' rows="5" cols="50"></textarea> </br></br>
+      <%=t :start %> <input type="date" name="experience[starting]" ng-model="experience.starting"
        placeholder="yyyy-MM-dd" /> </br> </br>
 
-          Loppu <input type="date" name="experience[end]" ng-model="experience.end"
+        <%=t :end %> <input type="date" name="experience[end]" ng-model="experience.end"
        placeholder="yyyy-MM-dd" /> </br> </br>
 
-      <button ng-click='addExperience()' id="save_experience" >Tallenna kokemus</button>
+      <button ng-click='addExperience()' id="save_experience" ><%=t :save_experience %></button>
     </div></br>
-    <button ng-click='sendApplication()' class="btn cool_button" style="">Lähetä hakemus!</button>
+    <button ng-click='sendApplication()' class="btn cool_button" style=""><%=t :send_application %></button>
   </div>
 
   </div>
   <% else %>
-  Et voi hakea työtä jonka yrityksen ylläpitäjä olet.
+  <%=t :cannot_apply_if_administrator %>
   <% end %>
 
 <% else %>
-Kirjaudu sisään jotta voit hakea!
+ <%=t :sign_in_to_apply %>
 <% end %>
