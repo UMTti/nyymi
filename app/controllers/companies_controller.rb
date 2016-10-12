@@ -62,7 +62,7 @@ class CompaniesController < ApplicationController
       current_user.companies << @company
     end
     @company.save
-    flash[:safe] = %Q[Yritys luotu! #{view_context.link_to("Tee uusia avoimia työpaikkoja", administration_company_path(@company))}.]
+    flash[:safe] = %Q[#{t("company_created")} #{view_context.link_to(t("create_new_open_jobs"), administration_company_path(@company))}.]
     respond_to do |format|
       if @company.save
         format.html { redirect_to @company }

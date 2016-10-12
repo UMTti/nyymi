@@ -1,4 +1,4 @@
-<h2> Yritysten ylläpitosivut </h2>
+<h2> <%=t :company_administration_pages %> </h2>
 <table class="table table-hover">
 		<% @user.companies.each do |c| %>
       <tr>
@@ -28,7 +28,7 @@
   });
 </script>
 
-<h2>Avoimien työpaikkojen ylläpitosivut</h2>
+<h2><%=t :open_jobs_administration_pages %></h2>
 
 <div ng-app="myApp" ng-controller="OpenJobsController">
 

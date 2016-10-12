@@ -25,6 +25,9 @@ module Nyymi
 
     config.assets.paths << Rails.root.join("app", "assets", "fonts")
 
+    config.middleware.use I18n::JS::Middleware
+
+
     #config.serve_static_files = true
   end
 end

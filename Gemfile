@@ -47,6 +47,8 @@ gem 'poltergeist'
 
 gem 'simplecov', :require => false, :group => :test
 
+gem "i18n-js", ">= 3.0.0.rc11"
+
 group :development do
   gem 'rails_layout'
   gem "rails-erd"

@@ -1,11 +1,11 @@
 <p id="notice"></p>
 
 <% if current_user && @company.users.includes(current_user) %>
-  <h1> <%= @company.name %> ylläpito</h1>
+  <h1> <%= @company.name %> <%=t :administration %></h1>
 
-       <%= link_to 'Poista yritys', @company , method: :delete, data: { confirm: 'Oletko varma? Kaikki yrityksen avoimet työpaikat poistuvat myös.' }, class:"btn btn-danger", style:"color:white;"%> 
-        <%= link_to 'Muokkaa perustietoja', edit_company_path(@company), 'data-no-turbolink' => true, class:"btn cool_button", style:"color:white;"  %> 
-	<h3> Ylläpitäjät </h3>
+       <%= link_to t("delete_company"), @company , method: :delete, data: { confirm: t("company_delete_confirmation") }, class:"btn btn-danger", style:"color:white;"%> 
+        <%= link_to t("edit_basic_company_information"), edit_company_path(@company), 'data-no-turbolink' => true, class:"btn cool_button", style:"color:white;"  %> 
+	<h3><%=t :administrators %> </h3>
 	<% @company.users.each do |a| %>
 		<%= a.username %> </br>
 	<% end %></br>
@@ -48,12 +48,15 @@ function($scope){
       company_id: $scope.company_id, 
     }
 
+    console.log(I18n.t("admin_adding_failed") + " käännös");
+    console.log("asd");
+
     $.post('/companies/'+ $scope.company_id + '/add_admin', admin)
     .success(function(data, status) {
         localStorage.setItem("notification", "Ylläpitäjä lisätty.");
         location.reload();
     }).error(function(data, status) {
-        localStorage.setItem("notification", "Käyttäjää ei löydy tai hän on jo ylläpitäjä.");
+        localStorage.setItem("notification", "asd");
         location.reload();
     });
 
@@ -63,43 +66,43 @@ function($scope){
 
 </script>
 
-<div class="btn btn-default" id="add_admin_button">Lisää uusi ylläpitäjä</div></br>
+<div class="btn btn-default" id="add_admin_button"><%=t :add_new_administrator %></div></br>
 
 <div ng-app="admin_app" ng-controller="MainCtrl">
 
   {{adminnotice}}
 
   <div id="add_admin_form" style="display:none;"></br>
-    Lisää uusi ylläpitäjä käyttäjänimellä:</br>
+    <%=t :add_new_administrator_by_username %></br>
     <input type='text' ng-model='admin.username' name='admin[username]'> </br></br>
-    <button ng-click='addAdmin()'>Lisää</button>
+    <button ng-click='addAdmin()'><%=t :add %></button>
   </div>
   </br>
 </div>
 
-<div class="btn btn-default" id="create_open_job_button">Luo uusi avoin työpaikka</div>
+<div class="btn btn-default" id="create_open_job_button"><%=t :create_new_open_job_button %></div>
 <div style="display:none;" id="create_open_job_form"> 
-	<h3> Luo uusi avoin työpaikka </h3>
+	<h3> <%=t :create_new_open_job_button %> </h3>
 
 	<%= form_for(@open_job) do |f| %>
     	<%= f.hidden_field :company_id %>
     	<div class="field">
-    		Nimi
+    		<%=t :name_upcase %>
     		<%= f.text_field :name, class:"form-control" %>
 		</div>
  		 <div class="field">
-   			 Työn kuvaus
+   			 <%=t :job_description %>
    			 <%= f.text_area :description, class:"form-control" %>
  		 </div>
  		 <div class="field">
-    		<b>Vanhentumisaika </b></br>
-        Tämän jälkeen työpaikkaa ei enää näytetä avoimissa työpaikoissa, mutta se säilyy yrityksen ylläpidossa. </br>
+    		<b><%=t :last_date %></b></br>
+        <%=t :last_visible_date_description %> </br>
     		<%= f.date_field :expires %>
 		</div>
     <%= f.submit %>
 </div>
 
- <h3> Avoimien työpaikkojen ylläpito </h3>
+ <h3> <%=t :open_jobs_administration %> </h3>
     <% @company.open_jobs.each do |o| %>
       <%= link_to o.name, administration_open_job_path(o) %> </br>
     <% end %>

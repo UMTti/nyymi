@@ -12,32 +12,32 @@
   <% end %>
 
   <div class="field">
-    <b>Käyttäjänimi</b> </br>
-    Tulee näkyviin työhakemuksissa.
+    <b><%=t :username_upcase %></b> </br>
+    <%=t :username_description %>
     <%= f.text_field :username, class:"form-control" %>
   </div>
 
   <div class="field">
-    <b>Oikea nimi</b> </br>
-    Oikea nimesi ei tule näkyviin työhakemuksissa.
+    <b><%=t :realname %></b> </br>
+    <%=t :realname_description %>
     <%= f.text_field :realname, class:"form-control" %>
   </div>
    <div class="field">
-    <b>Sähköpostiosoite</b> </br>
-    Sähköpostiosoitteesi ei tule näkyviin työhakemuksissa. 
+    <b><%=t :email %></b> </br>
+    <%=t :email_description %>
     <%= f.text_field :email, class:"form-control" %>
   </div>
   <div class="field">
-    <b>Puhelinnumero</b> </br>
-    Puhelinnumerosi ei tule näkyviin työhakemuksissa.
+    <b><%=t :phone_number %></b> </br>
+    <%=t :phone_number_description %>
     <%= f.text_field :phonenumber, class:"form-control" %>
   </div>
    <div class="field">
-    <b>Salasana</b>
+    <b><%=t :password_upcase %></b>
     <%= f.password_field :password, class:"form-control" %>
   </div>
   <div class="field">
-    <b>Salasanan vahvistus</b>
+    <b><%=t :password_confirmation %></b>
     <%= f.password_field :password_confirmation, class:"form-control"  %>
   </div>
   <div class="actions">

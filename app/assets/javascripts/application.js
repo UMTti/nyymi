@@ -10,6 +10,8 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
+//= require i18n
+//= require i18n.js
 //= require jquery
 //= require jquery.turbolinks
 //= require jquery_ujs

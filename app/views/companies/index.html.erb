@@ -19,7 +19,7 @@
   });
 </script>
 
-<h2>Yritykset</h2>
+<h2><%=t :companies %></h2>
 
 <div ng-app="myApp" ng-controller="CompaniesController">
 
@@ -39,5 +39,5 @@
 </div>
 
 <% if current_user %>
-  <%= link_to 'Luo uusi yritys', new_company_path %>
+  <%= link_to t("create_new_company"), new_company_path %>
 <% end %>
