@@ -141,6 +141,7 @@ en:
   conversations: "Conversations"
   interlocutor: "Interlocutor"
   send_message: "Send message"
+  message_sended: "Message sended!"
 
 fi: 
   choose_skill: "Valitse taito, älä ennakkoluuloja"
@@ -263,3 +264,4 @@ fi:
   conversations: "Keskustelut"
   interlocutor: "Keskustelukumppani"
   send_message: "Lähetä viesti"
+  message_sended: "Viesti lähetetty!"

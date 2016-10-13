@@ -37,7 +37,7 @@ function($scope){
     $.post('/send_message_for_company', { message: param_message })
     .success(function(data, status) {
         $scope.message.content = " ";
-        $( "#notice" ).append("<div class='alert alert-success'> <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>Viesti lähetetty!</div>");
+        $( "#notice" ).append("<div class='alert alert-success'> <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>" + I18n.t("message_sended") + "</div>");
     }).error(function(data, status) {
         alert("error");
     });
@@ -82,14 +82,14 @@ function($scope){
 </br>
 
 <% if current_user != nil and not @company.users.include? current_user %>
-<div class="btn btn-primary" id="send_message_button">Lähetä viesti</div></br>
+<div class="btn btn-primary" id="send_message_button"><%=t :send_message %></div></br>
 
 <div ng-app="send_message_app" ng-controller="MainCtrl">
 
   <div id="send_message_form" style="display:none;"></br>
-    Lähetä viesti </br>
+    <%=t :send_message %> </br>
     <textarea type='text' ng-model="message.content" name='message[content]' rows="5" cols="80"> </textarea> </br></br>
-    <button ng-click='sendMessage()'>Lähetä</button>
+    <button ng-click='sendMessage()'><%=t :send %></button>
   </div>
   </br>
 </div>
