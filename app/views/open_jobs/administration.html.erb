@@ -30,7 +30,7 @@ function($scope, $parse){
 
     $.post('/send_interview_invitation', { message: param_message, application_id: param_application_id })
     .success(function(data, status) {
-             $("#notice").html("<div class='alert alert-success'> Haastattelukutsu lähetetty! Hakijan vastaus tulee Viestit -osioon. <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button></div>");
+             $("#notice").html("<div class='alert alert-success'>" + I18n.t("invitation_sended_info") + " <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button></div>");
     }).error(function(data, status) {
         alert("error");
     });
@@ -83,7 +83,7 @@ $( ".hidden_partial_button" ).click(function() {
 
      <thead>
       <tr>
-        <th>Käyttäjänimi</th>
+        <th><%=t :username_upcase %></th>
       </tr>
     </thead>
 
@@ -93,10 +93,10 @@ $( ".hidden_partial_button" ).click(function() {
     <% div_id = "hidden-partial-#{a.id}" -%>
 		<td><div id="<%= div_id -%>" class="hidden_partial_button btn btn-default" style="margin-bottom:10px;"> <%=a.user.username %>
         <% if a.abandoned  %>
-       <span class="label label-primary">hylätty</span>
+       <span class="label label-primary"><%=t :abandoned %></span>
        <% end %>
       <% if a.invitationsended == "true"  %>
-         <span class="label label-primary">haastattelukutsu lähetetty</span>
+         <span class="label label-primary"><%=t :invitation_sended %></span>
        <% end %>
        </div>
       <div style="display:none;border: 1px solid #EEA236; padding:10px;" id="<%= div_id -%>divi" class="hidden_partial">

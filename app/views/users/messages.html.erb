@@ -80,13 +80,13 @@ function($scope, $parse){
 
 <div ng-app="send_message_to_conversation_app" ng-controller="MainCtrl">
 
-<h2> Keskustelut </h2>
+<h2><%=t :conversations %></h2>
 
 <table class="table">
 
      <thead>
       <tr>
-        <th>Keskustelukumppani</th>
+        <th><%=t :interlocutor %></th>
       </tr>
     </thead>
 
@@ -111,7 +111,7 @@ function($scope, $parse){
     <div class="conversation_channel" conversation-channel="<%= channeli %>" id="<%=a.id %>"></div>
      <tr>
     <% div_id = "hidden-partial-#{a.id}" -%>
-    <td><div id="<%= div_id -%>" class="hidden_partial_button btn cool_button"> <%= User.find(a.user).username %> liittyen yritykseen <%=c.name%> <span class="label label-info" id="label_<%=a.id%>"><%= a.not_seen(current_user.id) %></span></div>
+    <td><div id="<%= div_id -%>" class="hidden_partial_button btn cool_button"> <%= User.find(a.user).username %> <%=t :related_to_company %> <%=c.name%> <span class="label label-info" id="label_<%=a.id%>"><%= a.not_seen(current_user.id) %></span></div>
       <div style="display:none;" id="<%= div_id -%>divi" class="hidden_partial">
         <%= render 'conversations/showpartial', conversation: a %>
       </div>

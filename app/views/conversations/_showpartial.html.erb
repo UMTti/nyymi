@@ -10,10 +10,10 @@
   <div id="send_message_form"></br>
 
   <form ng-submit="sendMessage(<%= conversation.id %>)" ng-controller="MainCtrl">
-    Lähetä viesti </br>
+    <%=t :send_message %> </br>
     <input type='text' ng-model="message.content<%= conversation.id %>" name='message[content<%= conversation.id %>]' rows="5" cols="80">  </br></br>
     <!--<button ng-click='sendMessage(<%= conversation.id %>)'>Lähetä</button> -->
-    <input type="submit" id="submit" value="Lähetä" />
+    <input type="submit" id="submit" value="<%=t :send %>" />
   </form>
   </div>
   </br>

@@ -1,42 +1,42 @@
 
 
 <% if !a.abandoned %>
-	<%= link_to "hylkää hakemus", toggle_abandoned_application_path(a.id), method: :post, class: "btn btn-default", style:"" %>
+	<%= link_to t("abandon_application"), toggle_abandoned_application_path(a.id), method: :post, class: "btn btn-default", style:"" %>
 <% else %>
-	<%= link_to "poista hylätyistä", toggle_abandoned_application_path(a.id), method: :post, class: "btn btn-default", style:"" %>
+	<%= link_to t("remove_from_abandoned"), toggle_abandoned_application_path(a.id), method: :post, class: "btn btn-default", style:"" %>
 <% end %>
 
   <div id="send_message_form"></br>
 
   <form ng-submit="sendMessage(<%= a.user.id %>, <%= a.open_job.company.id %>, <%= a.id %>)" ng-controller="OpenJobAdminCtrl">
-    Lähetä haastattelukutsu käyttäjälle <%= a.user.username %> </br>
+    <%=t :send_interview_invitation_for %>: <%= a.user.username %> </br>
     <input type='text' ng-model="message.content<%= a.id %>" name='message[content<%= a.id %>]' rows="5" cols="80">  </br></br>
-    <input type="submit" id="submit" value="Lähetä" />
+    <input type="submit" id="submit" value="<%=t :send %>" />
   </form>
   </div>
 
 </br></br>
 
 <p>
-  <strong>Username:</strong>
+  <strong><%=t :username_upcase %> :</strong>
   <%= a.user.username %>
 </p>
 
 <p>
-  <strong>Vapaa kenttä</strong></br>
+  <strong><%=t :free_field %></strong></br>
   <%= a.freetext %>
 </p>
 
-<h2>Kokemukset</h2>
+<h2><%=t :experiences_upcase %></h2>
 
 <table class="table">
    <thead>
       <tr>
-        <th>Kuvaus/opiskeluohjelma</th>
-        <th>Tyyppi</th>
-        <th>Paikka jos relevantti</th>
-        <th>Alku</th>
-        <th>Loppu</th>
+        <th><%=t :description_or_study_program %></th>
+        <th><%=t :type %></th>
+        <th><%=t :place_if_relevant %></th>
+        <th><%=t :start %></th>
+        <th><%=t :end %></th>
       </tr>
     </thead>
     <tbody>
