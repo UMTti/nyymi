@@ -22,8 +22,9 @@ module Nyymi
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
 
+    I18n.enforce_available_locales = true
     config.i18n.default_locale = :'en'
-    
+
     config.active_record.raise_in_transactional_callbacks = true
 
     config.assets.paths << Rails.root.join("app", "assets", "fonts")

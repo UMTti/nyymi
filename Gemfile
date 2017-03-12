@@ -22,7 +22,7 @@ gem 'json'
 
 gem 'coveralls', require: false
 
-gem 'i18n', github: 'svenfuchs/i18n'
+gem 'rails-i18n'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
