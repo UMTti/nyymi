@@ -22,7 +22,7 @@ module Nyymi
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
 
-    I18n.enforce_available_locales = true
+    I18n.config.enforce_available_locales = false
     config.i18n.locale = :'en'
 
     config.active_record.raise_in_transactional_callbacks = true
