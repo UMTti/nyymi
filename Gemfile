@@ -22,7 +22,7 @@ gem 'json'
 
 gem 'coveralls', require: false
 
-gem 'rails-i18n'
+gem 'i18n', github: 'svenfuchs/i18n'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
@@ -98,4 +98,3 @@ group :development do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 end
-
